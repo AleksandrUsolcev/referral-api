@@ -14,6 +14,7 @@ django-filter = "^23.2"
 django-phonenumber-field = "^7.1.0"
 python-dotenv = "^1.0.0"
 psycopg2-binary = "^2.9.7"
+phonenumbers = "^8.13.18"
 
 
 [tool.poetry.group.dev.dependencies]
