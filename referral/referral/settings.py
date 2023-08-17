@@ -112,6 +112,7 @@ SIMPLE_JWT = {
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Referral API',
     'VERSION': '1.0.0',
+    'DESCRIPTION': 'API сервиса с аутентификацией по номеру телефона и простой реферальной системой.',
     'SERVE_INCLUDE_SCHEMA': False,
 }
 

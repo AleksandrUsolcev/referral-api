@@ -16,6 +16,7 @@ from rest_framework_simplejwt.serializers import (TokenRefreshSerializer,
                                                   TokenVerifySerializer)
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
+
 from users.models import AuthCode
 
 from .serializers import (PhoneSendCodeSerializer, PhoneTokenSerializer,
@@ -139,6 +140,15 @@ class PhoneTokenView(APIView):
 
     @extend_schema(
         summary='Получение токенов по номеру телефона и коду',
+        responses={
+            status.HTTP_200_OK: inline_serializer(
+                name='tokens',
+                fields={
+                    'access': serializers.CharField(),
+                    'refresh': serializers.CharField()
+                }
+            )
+        }
     )
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
