@@ -3,7 +3,6 @@ import string
 
 from django.conf import settings
 from django.contrib.auth.base_user import AbstractBaseUser
-from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import PermissionsMixin
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -129,10 +128,6 @@ class AuthCode(models.Model):
         verbose_name = 'Код авторизации'
         verbose_name_plural = 'Коды авторизации'
         ordering = ['-created']
-
-    def save(self, *args, **kwargs):
-        self.hashed_code = make_password(str(self.code), salt=None)
-        super().save(*args, **kwargs)
 
     def expire_date(self):
         return self.created + timezone.timedelta(

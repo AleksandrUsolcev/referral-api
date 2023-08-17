@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -13,7 +14,8 @@ DEBUG = os.getenv('DEBUG', False) == 'True'
 
 ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', default='*')]
 
-AUTH_CODE_EXPIRES_MINUTES = os.getenv('AUTH_CODE_EXPIRES_MINUTES', default=10)
+AUTH_CODE_EXPIRES_MINUTES = int(
+    os.getenv('AUTH_CODE_EXPIRES_MINUTES', default=10))
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -94,6 +96,17 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
+}
+
+REFRESH_TOKEN_LIFETIME_DAYS = int(os.getenv('REFRESH_TOKEN_LIFETIME_DAYS'))
+ACCESS_TOKEN_LIFETIME_MINUTES = int(os.getenv('ACCESS_TOKEN_LIFETIME_MINUTES'))
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=ACCESS_TOKEN_LIFETIME_MINUTES),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=REFRESH_TOKEN_LIFETIME_DAYS),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'TOKEN_OBTAIN_SERIALIZER': 'api.v1.users.serializers.CustomTokenObtainSerializer',
+    'TOKEN_REFRESH_SERIALIZER': 'api.v1.users.serializers.CustomTokenRefreshSerializer',
 }
 
 SPECTACULAR_SETTINGS = {
