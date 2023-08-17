@@ -20,6 +20,16 @@ urlpatterns = [
         name='jwt_get_by_phone'
     ),
     re_path(
+        r'^auth/jwt/verify/?$',
+        views.TokenVerifyView.as_view(),
+        name='jwt_verify'
+    ),
+    re_path(
+        r'^auth/jwt/refresh/?$',
+        views.TokenRefreshView.as_view(),
+        name='jwt_refresh'
+    ),
+    re_path(
         r'^schema/?$',
         SpectacularAPIView.as_view(),
         name='schema'

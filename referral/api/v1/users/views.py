@@ -12,7 +12,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
+from rest_framework_simplejwt.serializers import (TokenRefreshSerializer,
+                                                  TokenVerifySerializer)
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 from users.models import AuthCode
 
 from .serializers import (PhoneSendCodeSerializer, PhoneTokenSerializer,
@@ -37,9 +40,10 @@ class UserViewSet(ModelViewSet):
 class PhoneSendCodeView(APIView):
 
     permission_classes = (AllowAny,)
+    serializer_class = PhoneSendCodeSerializer
 
     def post(self, request):
-        serializer = PhoneSendCodeSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
 
         if not serializer.is_valid():
             return Response(
@@ -65,9 +69,10 @@ class PhoneSendCodeView(APIView):
 class PhoneTokenView(APIView):
 
     permission_classes = (AllowAny,)
+    serializer_class = PhoneTokenSerializer
 
     def post(self, request):
-        serializer = PhoneTokenSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
 
         if not serializer.is_valid():
             return Response(
@@ -117,3 +122,21 @@ class PhoneTokenView(APIView):
             {'access': access_token, 'refresh': str(refresh)},
             status=status.HTTP_200_OK
         )
+
+
+@extend_schema(tags=['Auth'])
+class TokenRefreshView(TokenRefreshView):
+
+    serializer_class = TokenRefreshSerializer
+
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+
+@extend_schema(tags=['Auth'])
+class TokenVerifyView(TokenVerifyView):
+
+    serializer_class = TokenVerifySerializer
+
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
