@@ -8,6 +8,11 @@ v10 = OptionalSlashRouter()
 v10.register('users', views.UserViewSet, basename='users')
 
 urlpatterns = [
+    re_path(
+        r'^users/current_user/?$',
+        views.CurrentUserView.as_view(),
+        name='current_user'
+    ),
     path('', include(v10.urls)),
     re_path(
         r'^auth/send_code/?$',

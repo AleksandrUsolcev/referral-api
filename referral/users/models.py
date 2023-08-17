@@ -89,14 +89,17 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.invited_by_code:
             if self.invited_by_code == self.invite_code:
                 raise ValidationError(
-                    {'invited_by_code': 'Cannot specify your own code.'}
+                    {'invited_by_code': 'Нельзя использовать свой код.'}
                 )
 
             try:
                 User.objects.get(invite_code__iexact=self.invited_by_code)
             except User.DoesNotExist:
                 raise ValidationError(
-                    {'invited_by_code': 'User with this code does not exist.'}
+                    {
+                        'invited_by_code':
+                        'Пользователь с таким кодом не найден.'
+                    }
                 )
         super().clean()
 
