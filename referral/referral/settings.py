@@ -13,6 +13,8 @@ DEBUG = os.getenv('DEBUG', False) == 'True'
 
 ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', default='*')]
 
+AUTH_CODE_EXPIRES_MINUTES = os.getenv('AUTH_CODE_EXPIRES_MINUTES', default=10)
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

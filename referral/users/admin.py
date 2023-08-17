@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 
-from .models import User
+from .models import AuthCode, User
 
 
 class CustomUserChangeForm(UserChangeForm):
@@ -32,6 +32,7 @@ class CustomUserCreationForm(UserCreationForm):
         return password2
 
 
+@admin.register(User)
 class CustomUserAdmin(BaseUserAdmin):
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
@@ -60,4 +61,15 @@ class CustomUserAdmin(BaseUserAdmin):
     readonly_fields = ('invite_code',)
 
 
-admin.site.register(User, CustomUserAdmin)
+@admin.register(AuthCode)
+class AuthCodeAdmin(admin.ModelAdmin):
+    list_display = ('phone', 'created', 'expire_date')
+    readonly_fields = ('phone', 'created', 'expire_date')
+    exclude = ('code',)
+    ordering = ('-created',)
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False

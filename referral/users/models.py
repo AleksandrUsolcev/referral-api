@@ -1,7 +1,9 @@
 import random
 import string
 
+from django.conf import settings
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import PermissionsMixin
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -106,3 +108,33 @@ class User(AbstractBaseUser, PermissionsMixin):
             ))
             if not User.objects.filter(invite_code__iexact=code).exists():
                 return code
+
+
+class AuthCode(models.Model):
+
+    phone = PhoneNumberField(
+        verbose_name=_('phone'),
+        max_length=12,
+        unique=True
+    )
+    code = models.CharField(
+        verbose_name=_('code')
+    )
+    created = models.DateTimeField(
+        verbose_name=_('created'),
+        default=timezone.now
+    )
+
+    class Meta:
+        verbose_name = 'Код авторизации'
+        verbose_name_plural = 'Коды авторизации'
+        ordering = ['-created']
+
+    def save(self, *args, **kwargs):
+        self.hashed_code = make_password(str(self.code), salt=None)
+        super().save(*args, **kwargs)
+
+    def expire_date(self):
+        return self.created + timezone.timedelta(
+            minutes=settings.AUTH_CODE_EXPIRES_MINUTES
+        )
