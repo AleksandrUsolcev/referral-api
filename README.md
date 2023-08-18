@@ -89,7 +89,7 @@ docker compose up -d
 Создаем суперпользователя
 
 ```bash
-docker compose exec ref-web python manage.py createsuperuser
+docker compose exec web python manage.py createsuperuser
 ```
 
 ## Автор
