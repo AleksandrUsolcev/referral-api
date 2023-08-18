@@ -87,7 +87,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def clean(self):
         if self.invited_by_code:
-            if self.invited_by_code == self.invite_code:
+            if self.invited_by_code.lower() == self.invite_code.lower():
                 raise ValidationError(
                     {'invited_by_code': 'Нельзя использовать свой код.'}
                 )
