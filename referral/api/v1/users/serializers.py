@@ -26,7 +26,9 @@ class UserDetailsSerializer(UserSerializer):
 
     @extend_schema_field(InvitedUserSerializer(many=True))
     def get_invited(self, obj):
-        invited_users = User.objects.filter(invited_by_code=obj.invite_code)
+        invited_users = User.objects.filter(
+            invited_by_code__iexact=obj.invite_code
+        )
         invited_serializer = InvitedUserSerializer(invited_users, many=True)
         return invited_serializer.data
 
