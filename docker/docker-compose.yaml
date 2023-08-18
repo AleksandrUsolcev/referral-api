@@ -17,7 +17,6 @@ services:
     container_name: ref-web
     build: ../
     restart: always
-    entrypoint: /app/entrypoint.sh
     volumes:
       - static:/app/static/
     depends_on:
