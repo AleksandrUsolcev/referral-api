@@ -42,7 +42,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     def validate_invited_by_code(self, value):
         user = self.instance
 
-        if value == user.invite_code:
+        if value.lower() == user.invite_code.lower():
             raise serializers.ValidationError('Нельзя использовать свой код.')
 
         try:
