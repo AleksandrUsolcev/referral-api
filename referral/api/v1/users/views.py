@@ -180,7 +180,7 @@ class PhoneTokenView(APIView):
         user_data = {'invited_by_code': None}
 
         if invited_by_code:
-            user = User.objects.filter(invite_code=invited_by_code)
+            user = User.objects.filter(invite_code__iexact=invited_by_code)
             if not user.exists():
                 return Response(
                     {'invited_by_code': 'Неверный реферальный код.'},
