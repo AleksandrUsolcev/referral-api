@@ -186,6 +186,15 @@ class PhoneTokenView(APIView):
                     {'invited_by_code': 'Неверный реферальный код.'},
                     status=status.HTTP_403_FORBIDDEN
                 )
+            ref_user = user.first()
+            if (
+                ref_user.phone == phone
+                and ref_user.invite_code.lower() == invited_by_code.lower()
+            ):
+                return Response(
+                    {'invited_by_code': 'Нельзя использовать свой код.'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
             user_data['invited_by_code'] = invited_by_code
 
         user, _ = User.objects.update_or_create(
