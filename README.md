@@ -2,10 +2,6 @@
 
 API сервиса с аутентификацией по номеру телефона и простой реферальной системой.
 
-[**Redoc**](https://referral-api.usolcev.com/api/v1/redoc/)
-
-[**Postman collection**](api.postman_collection)
-
 ## Структура и описание проекта
 
 ### Авторизация по номеру телефона
